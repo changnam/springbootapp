@@ -19,6 +19,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.honsoft.web.entity.Car;
+import com.honsoft.web.mapper.h2.CarMapper;
 import com.honsoft.web.repository.h2.CarRepository;
 
 @SpringBootApplication(exclude = { DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class,
@@ -45,6 +46,17 @@ public class SpringbootappApplication implements CommandLineRunner{
 	@Autowired
 	@Qualifier("postgresqlCarRepository")
 	private com.honsoft.web.repository.postgresql.CarRepository postgresqlCarRepository;
+	
+	@Autowired
+	private com.honsoft.web.mapper.h2.CarMapper h2CarMapper;
+	@Autowired
+	private com.honsoft.web.mapper.mysql.CarMapper mysqlCarMapper;
+	@Autowired
+	private com.honsoft.web.mapper.hsqldb.CarMapper hsqldbCarMapper;
+	@Autowired
+	private com.honsoft.web.mapper.oracle.CarMapper oracleCarMapper;
+	@Autowired
+	private com.honsoft.web.mapper.postgresql.CarMapper postgresqlCarMapper;
 	
 	private static Logger logger = LoggerFactory.getLogger(SpringbootappApplication.class);
 
@@ -92,6 +104,37 @@ public class SpringbootappApplication implements CommandLineRunner{
 		logger.info("Let's inspect the beans provided by Spring Boot: postgresqlCarRepository");
 
 		allCars = (List<Car>) postgresqlCarRepository.findAll();
+		for (Car car : allCars) {
+			logger.info(car.getName());
+		}
+		
+		logger.info("Let's inspect the beans provided by Spring Boot: h2CarMapper");
+
+		allCars = (List<Car>) h2CarMapper.getAllCars();
+		for (Car car : allCars) {
+			logger.info(car.getName());
+		}
+		logger.info("Let's inspect the beans provided by Spring Boot: hsqldbCarMapper");
+
+		allCars = (List<Car>) hsqldbCarMapper.getAllCars();
+		for (Car car : allCars) {
+			logger.info(car.getName());
+		}
+		logger.info("Let's inspect the beans provided by Spring Boot: mysqlCarMapper");
+
+		allCars = (List<Car>) mysqlCarMapper.getAllCars();
+		for (Car car : allCars) {
+			logger.info(car.getName());
+		}
+		logger.info("Let's inspect the beans provided by Spring Boot: oracleCarMapper");
+
+		allCars = (List<Car>) oracleCarMapper.getAllCars();
+		for (Car car : allCars) {
+			logger.info(car.getName());
+		}
+		logger.info("Let's inspect the beans provided by Spring Boot: postgresqlCarMapper");
+
+		allCars = (List<Car>) postgresqlCarMapper.getAllCars();
 		for (Car car : allCars) {
 			logger.info(car.getName());
 		}
