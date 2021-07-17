@@ -75,68 +75,113 @@ public class SpringbootappApplication implements CommandLineRunner{
 	public void run(String... args) throws Exception {
 		logger.info("Let's inspect the beans provided by Spring Boot: h2CarRepository");
 
+		Car hyundaiCar = new Car();
+		hyundaiCar.setName("H2Hyundai");
+		hyundaiCar.setPrice(1000000);
+		h2CarRepository.save(hyundaiCar);
 		List<Car> allCars = (List<Car>) h2CarRepository.findAll();
 		for (Car car : allCars) {
-			logger.info(car.getName());
+			logger.info(car.getId()+","+car.getName());
 		}
 		
 		logger.info("Let's inspect the beans provided by Spring Boot: hsqldbCarRepository");
 
+		hyundaiCar.setId(0);
+		hyundaiCar.setName("HsqldbHyundai");
+		hyundaiCar.setPrice(1000000);
+		hsqldbCarRepository.save(hyundaiCar);
 		allCars = (List<Car>) hsqldbCarRepository.findAll();
 		for (Car car : allCars) {
-			logger.info(car.getName());
+			logger.info(car.getId()+","+car.getName());
 		}
 		
 		logger.info("Let's inspect the beans provided by Spring Boot: mysqlCarRepository");
 
+		hyundaiCar.setId(0);
+		hyundaiCar.setName("MysqlHyundai");
+		hyundaiCar.setPrice(1000000);
+		mysqlCarRepository.save(hyundaiCar);
 		allCars = (List<Car>) mysqlCarRepository.findAll();
 		for (Car car : allCars) {
-			logger.info(car.getName());
+			logger.info(car.getId()+","+car.getName());
 		}
 		
 		logger.info("Let's inspect the beans provided by Spring Boot: oracleCarRepository");
 
+		//hyundaiCar.setId(0);
+		//hyundaiCar.setName("OracleHyundai");
+		//hyundaiCar.setPrice(1000000);
+		//oracleCarRepository.save(hyundaiCar);
 		allCars = (List<Car>) oracleCarRepository.findAll();
 		for (Car car : allCars) {
-			logger.info(car.getName());
+			logger.info(car.getId()+","+car.getName());
 		}
 		
 		logger.info("Let's inspect the beans provided by Spring Boot: postgresqlCarRepository");
 
+		hyundaiCar.setId(0);
+		hyundaiCar.setName("PostgresqlHyundai");
+		hyundaiCar.setPrice(1000000);
+		postgresqlCarRepository.save(hyundaiCar);
 		allCars = (List<Car>) postgresqlCarRepository.findAll();
 		for (Car car : allCars) {
-			logger.info(car.getName());
+			logger.info(car.getId()+","+car.getName());
 		}
 		
 		logger.info("Let's inspect the beans provided by Spring Boot: h2CarMapper");
 
+		Car kiaCar = new Car();
+		kiaCar.setName("H2Kia");
+		kiaCar.setPrice(3000000);
+		
+		h2CarMapper.insertCar(kiaCar);
 		allCars = (List<Car>) h2CarMapper.getAllCars();
 		for (Car car : allCars) {
-			logger.info(car.getName());
+			logger.info(car.getId()+","+car.getName());
 		}
+		
 		logger.info("Let's inspect the beans provided by Spring Boot: hsqldbCarMapper");
 
+		kiaCar.setId(0);
+		kiaCar.setName("HsqldbKia");
+		kiaCar.setPrice(3000000);
+		hsqldbCarMapper.insertCar(kiaCar);
 		allCars = (List<Car>) hsqldbCarMapper.getAllCars();
 		for (Car car : allCars) {
-			logger.info(car.getName());
+			logger.info(car.getId()+","+car.getName());
 		}
+		
 		logger.info("Let's inspect the beans provided by Spring Boot: mysqlCarMapper");
 
+		kiaCar.setId(0);
+		kiaCar.setName("MysqlKia");
+		kiaCar.setPrice(3000000);
+		mysqlCarMapper.insertCar(kiaCar);
 		allCars = (List<Car>) mysqlCarMapper.getAllCars();
 		for (Car car : allCars) {
-			logger.info(car.getName());
+			logger.info(car.getId()+","+car.getName());
 		}
+		
 		logger.info("Let's inspect the beans provided by Spring Boot: oracleCarMapper");
 
+		kiaCar.setId(0);
+		kiaCar.setName("OracleKia");
+		kiaCar.setPrice(3000000);
+		oracleCarMapper.insertCar(kiaCar);
 		allCars = (List<Car>) oracleCarMapper.getAllCars();
 		for (Car car : allCars) {
-			logger.info(car.getName());
+			logger.info(car.getId()+","+car.getName());
 		}
+		
 		logger.info("Let's inspect the beans provided by Spring Boot: postgresqlCarMapper");
 
+		kiaCar.setId(0);
+		kiaCar.setName("PostgresqlKia");
+		kiaCar.setPrice(3000000);
+		postgresqlCarMapper.insertCar(kiaCar);
 		allCars = (List<Car>) postgresqlCarMapper.getAllCars();
 		for (Car car : allCars) {
-			logger.info(car.getName());
+			logger.info(car.getId()+","+car.getName());
 		}
 	}
 

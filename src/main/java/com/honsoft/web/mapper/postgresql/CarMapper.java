@@ -2,7 +2,9 @@ package com.honsoft.web.mapper.postgresql;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Component;
@@ -16,4 +18,8 @@ public interface CarMapper {
 	  
 	  @Select("Select * from cars ")
 	  List<Car> getAllCars();
+	  
+	  @Insert("Insert into cars (name,price) values (#{name},#{price})")
+	  @Options(useGeneratedKeys = true, keyProperty = "id")
+	  void insertCar(Car car);
 	}
