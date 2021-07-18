@@ -11,4 +11,6 @@ java -cp ./hsqldb-2.5.2.jar org.hsqldb.util.DatabaseManagerSwing
 접속 url
 jdbc:hsqldb:hsql://localhost:9001/xdb
 
-JPA 는 persistennt context 에서 관리되다가 transaction 완료 시점에 flush 된다 (db에 반영)
+JPA 는 persistennt context 에서 관리되다가 transaction 완료 시점에 flush 된다 (db에 반영) 그러므로 save 메소드를 이용하면 entity 가 insert 되거나 udpate 된다. (persistent context 에 반영되고 결국 db에 반영)
+
+
