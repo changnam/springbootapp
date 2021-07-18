@@ -10,15 +10,15 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.honsoft.web.entity.Car;
-import com.honsoft.web.mapper.h2.CarMapper;
-import com.honsoft.web.repository.h2.CarRepository;
+import com.honsoft.web.mapper.oracle.CarMapper;
+import com.honsoft.web.repository.oracle.CarRepository;
 
 @Service
-public class H2CarService {
-	private Logger logger = LoggerFactory.getLogger(H2CarService.class);
+public class OracleCarService {
+	private Logger logger = LoggerFactory.getLogger(OracleCarService.class);
 
 	@Autowired
-	@Qualifier("h2CarRepository")
+	@Qualifier("oracleCarRepository")
 	private CarRepository carRepository;
 
 	@Autowired

@@ -6,14 +6,12 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
 @Configuration
-@EnableWebSecurity (debug = true)
-public class SecurityConfig extends WebSecurityConfigurerAdapter{
+@EnableWebSecurity(debug = true)
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        web
-            .ignoring()
-            .antMatchers("/h2-console/**");
-    }
+	@Override
+	public void configure(WebSecurity web) throws Exception {
+		web.ignoring().antMatchers("/h2-console/**");
+	}
 
 }

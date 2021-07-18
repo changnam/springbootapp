@@ -36,14 +36,15 @@ import org.springframework.transaction.PlatformTransactionManager;
 import com.zaxxer.hikari.HikariDataSource;
 
 @Configuration
-@PropertySource(value={"classpath:jdbc.properties"},ignoreResourceNotFound = true)
-@MapperScan(value = {"com.honsoft.web.mapper.h2" }, sqlSessionFactoryRef = "h2SqlSessionFactory", nameGenerator = UniqueNameGenerator.class)
+@PropertySource(value = { "classpath:jdbc.properties" }, ignoreResourceNotFound = true)
+@MapperScan(value = {
+		"com.honsoft.web.mapper.h2" }, sqlSessionFactoryRef = "h2SqlSessionFactory", nameGenerator = UniqueNameGenerator.class)
 @EnableJpaRepositories(basePackages = "com.honsoft.web.repository.h2", entityManagerFactoryRef = "h2EntityManagerFactory", transactionManagerRef = "h2TransactionManager")
 public class DataSourceConfigH2 {
-	
+
 	@Autowired
 	private Environment env;
-	
+
 	// datasource
 	@Bean(name = "h2DataSource", destroyMethod = "close")
 	@ConfigurationProperties(prefix = "h2.datasource.hikari")
@@ -51,57 +52,52 @@ public class DataSourceConfigH2 {
 	public DataSource h2DataSource() {
 		return DataSourceBuilder.create().type(HikariDataSource.class).build();
 	}
-	
+
 	@Bean
 	public DataSourceInitializer h2DataSourceInitializer(@Qualifier("h2DataSource") DataSource datasource) {
 		ResourceDatabasePopulator resourceDatabasePopulator = new ResourceDatabasePopulator();
 		resourceDatabasePopulator.addScript(new ClassPathResource("ddl/h2/schema-h2.sql"));
 		resourceDatabasePopulator.addScript(new ClassPathResource("ddl/h2/data-h2.sql"));
 		resourceDatabasePopulator.setIgnoreFailedDrops(true);
-		
+
 		DataSourceInitializer dataSourceInitializer = new DataSourceInitializer();
 		dataSourceInitializer.setDataSource(datasource);
 		dataSourceInitializer.setDatabasePopulator(resourceDatabasePopulator);
 		dataSourceInitializer.setEnabled(env.getProperty("h2.datasource.initialize", Boolean.class, false));
-        
+
 		return dataSourceInitializer;
 	}
-	
-	
+
 	@Bean(name = "h2TransactionManager")
-    public PlatformTransactionManager h2TransactionManager()
-    {
-        EntityManagerFactory factory = h2EntityManagerFactory().getObject();
-        return new JpaTransactionManager(factory);
-    }
+	public PlatformTransactionManager h2TransactionManager() {
+		EntityManagerFactory factory = h2EntityManagerFactory().getObject();
+		return new JpaTransactionManager(factory);
+	}
 
 	// jpa
 	@PersistenceContext(unitName = "h2Unit")
 	@Bean(name = "h2EntityManagerFactory")
-    public LocalContainerEntityManagerFactoryBean h2EntityManagerFactory()
-    {
-        LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
-        factory.setDataSource(h2DataSource());
-        factory.setPackagesToScan(new String[]{"com.honsoft.web.entity"});
-        factory.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
-     
-        Properties jpaProperties = new Properties();
-        jpaProperties.put("hibernate.hbm2ddl.auto", env.getProperty("spring.jpa.hibernate.ddl-auto"));
-        jpaProperties.put("hibernate.show-sql", env.getProperty("spring.jpa.show-sql"));
-        factory.setJpaProperties(jpaProperties);
-     
-        return factory;
-    }
-	
-	 
-    @Bean
-    public OpenEntityManagerInViewFilter h2OpenEntityManagerInViewFilter()
-    {
-        OpenEntityManagerInViewFilter osivFilter = new OpenEntityManagerInViewFilter();
-        osivFilter.setEntityManagerFactoryBeanName("h2EntityManagerFactory");
-        return osivFilter;
-    }
-    
+	public LocalContainerEntityManagerFactoryBean h2EntityManagerFactory() {
+		LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
+		factory.setDataSource(h2DataSource());
+		factory.setPackagesToScan(new String[] { "com.honsoft.web.entity" });
+		factory.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
+
+		Properties jpaProperties = new Properties();
+		jpaProperties.put("hibernate.hbm2ddl.auto", env.getProperty("spring.jpa.hibernate.ddl-auto"));
+		jpaProperties.put("hibernate.show-sql", env.getProperty("spring.jpa.show-sql"));
+		factory.setJpaProperties(jpaProperties);
+
+		return factory;
+	}
+
+	@Bean
+	public OpenEntityManagerInViewFilter h2OpenEntityManagerInViewFilter() {
+		OpenEntityManagerInViewFilter osivFilter = new OpenEntityManagerInViewFilter();
+		osivFilter.setEntityManagerFactoryBeanName("h2EntityManagerFactory");
+		return osivFilter;
+	}
+
 	// mybatis
 	@Bean(name = "h2SqlSessionFactory")
 	public SqlSessionFactory h2SqlSessionFactory(@Qualifier("h2DataSource") DataSource h2DataSource,
@@ -109,15 +105,15 @@ public class DataSourceConfigH2 {
 		SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
 		sqlSessionFactoryBean.setDataSource(h2DataSource);
 		sqlSessionFactoryBean.setVfs(SpringBootVFS.class);
-		//sqlSessionFactoryBean.setTypeAliasesPackage("com.honsoft.web.dto");
-		//sqlSessionFactoryBean.setConfigLocation(applicationContext.getResource("classpath:mybatis-config.xml"));
+		// sqlSessionFactoryBean.setTypeAliasesPackage("com.honsoft.web.dto");
+		// sqlSessionFactoryBean.setConfigLocation(applicationContext.getResource("classpath:mybatis-config.xml"));
 		// sqlSessionFactoryBean.setMapperLocations(applicationContext.getResources("classpath:sql/**/*.xml"));
-		
+
 		org.apache.ibatis.session.Configuration configuration = new org.apache.ibatis.session.Configuration();
 		configuration.setMapUnderscoreToCamelCase(true);
 		configuration.setJdbcTypeForNull(JdbcType.NULL);
 		sqlSessionFactoryBean.setConfiguration(configuration);
-		
+
 		return sqlSessionFactoryBean.getObject();
 	}
 
@@ -125,10 +121,10 @@ public class DataSourceConfigH2 {
 	public SqlSessionTemplate h2SqlSessionTemplate(SqlSessionFactory h2SqlSessionFactory) throws Exception {
 		return new SqlSessionTemplate(h2SqlSessionFactory);
 	}
-	
+
 	@Bean
-    public PlatformTransactionManager h2TxManager(@Qualifier("h2DataSource") DataSource datasource) {
-        return new DataSourceTransactionManager(datasource);
-    }
-	
+	public PlatformTransactionManager h2TxManager(@Qualifier("h2DataSource") DataSource datasource) {
+		return new DataSourceTransactionManager(datasource);
+	}
+
 }

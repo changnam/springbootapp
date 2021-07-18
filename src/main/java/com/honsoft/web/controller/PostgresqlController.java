@@ -8,16 +8,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.honsoft.web.service.H2CarService;
+import com.honsoft.web.service.PostgresqlCarService;
 import com.honsoft.web.entity.Car;
 
 @RestController
-public class H2Controller {
+public class PostgresqlController {
 	@Autowired
-	private H2CarService carService;
+	private PostgresqlCarService carService;
 
-	@RequestMapping("/h2Insert")
-	public String h2Insert(@RequestParam("name") String name) {
+	@RequestMapping("/postgresqlInsert")
+	public String postgresqlInsert(@RequestParam("name") String name) {
 		Car car = new Car();
 		car.setName(name);
 		car.setPrice(50000);
@@ -26,13 +26,13 @@ public class H2Controller {
 		return "success";
 	}
 
-	@RequestMapping("/h2List")
-	public List<Car> h2List() {
+	@RequestMapping("/postgresqlList")
+	public List<Car> postgresqlList() {
 		return carService.selectAllCars();
 	}
 
-	@RequestMapping("/h2Update")
-	public String h2Update(@RequestParam("id") int id, @RequestParam("name") String name,
+	@RequestMapping("/postgresqlUpdate")
+	public String postgresqlUpdate(@RequestParam("id") int id, @RequestParam("name") String name,
 			@RequestParam("price") int price) {
 		Car car = new Car();
 		car.setId(id);
@@ -43,8 +43,8 @@ public class H2Controller {
 		return "success";
 	}
 
-	@RequestMapping("/h2Delete")
-	public String h2Delete(@RequestParam("id") int id) {
+	@RequestMapping("/postgresqlDelete")
+	public String postgresqlDelete(@RequestParam("id") int id) {
 		Car car = new Car();
 		car.setId(id);
 		carService.deleteCar(car);
@@ -52,8 +52,8 @@ public class H2Controller {
 		return "success";
 	}
 
-	@RequestMapping("/h2InsertMapper")
-	public String h2InsertMapper(@RequestParam("name") String name) {
+	@RequestMapping("/postgresqlInsertMapper")
+	public String postgresqlInsertMapper(@RequestParam("name") String name) {
 		Car car = new Car();
 		car.setName(name);
 		car.setPrice(50000);
@@ -62,13 +62,13 @@ public class H2Controller {
 		return "success";
 	}
 
-	@RequestMapping("/h2ListMapper")
-	public List<Car> h2ListMapper() {
+	@RequestMapping("/postgresqlListMapper")
+	public List<Car> postgresqlListMapper() {
 		return carService.selectAllCarsMapper();
 	}
 
-	@RequestMapping("/h2UpdateMapper")
-	public String h2UpdateMapper(@RequestParam("id") int id, @RequestParam("name") String name,
+	@RequestMapping("/postgresqlUpdateMapper")
+	public String postgresqlUpdateMapper(@RequestParam("id") int id, @RequestParam("name") String name,
 			@RequestParam("price") int price) {
 		Car car = new Car();
 		car.setId(id);
@@ -79,8 +79,8 @@ public class H2Controller {
 		return "success";
 	}
 
-	@RequestMapping("/h2DeleteMapper")
-	public String h2DeleteMapper(@RequestParam("id") int id) {
+	@RequestMapping("/postgresqlDeleteMapper")
+	public String postgresqlDeleteMapper(@RequestParam("id") int id) {
 		Car car = new Car();
 		car.setId(id);
 		carService.deleteCarMapper(car);

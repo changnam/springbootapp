@@ -20,7 +20,7 @@ public class HsqldbServerConfig {
 
 	@Autowired
 	private Environment env;
-	
+
 //    @Bean(initMethod = "start", destroyMethod = "stop")
 //    public HsqldbServer hsqldbServer() {
 //    	Properties props = new Properties();
@@ -30,5 +30,5 @@ public class HsqldbServerConfig {
 //    	
 //    	return new HsqldbServer(props);
 //    }
-		
+
 }

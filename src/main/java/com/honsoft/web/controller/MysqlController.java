@@ -8,16 +8,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.honsoft.web.service.H2CarService;
+import com.honsoft.web.service.MysqlCarService;
 import com.honsoft.web.entity.Car;
 
 @RestController
-public class H2Controller {
+public class MysqlController {
 	@Autowired
-	private H2CarService carService;
+	private MysqlCarService carService;
 
-	@RequestMapping("/h2Insert")
-	public String h2Insert(@RequestParam("name") String name) {
+	@RequestMapping("/mysqlInsert")
+	public String mysqlInsert(@RequestParam("name") String name) {
 		Car car = new Car();
 		car.setName(name);
 		car.setPrice(50000);
@@ -26,13 +26,13 @@ public class H2Controller {
 		return "success";
 	}
 
-	@RequestMapping("/h2List")
-	public List<Car> h2List() {
+	@RequestMapping("/mysqlList")
+	public List<Car> mysqlList() {
 		return carService.selectAllCars();
 	}
 
-	@RequestMapping("/h2Update")
-	public String h2Update(@RequestParam("id") int id, @RequestParam("name") String name,
+	@RequestMapping("/mysqlUpdate")
+	public String mysqlUpdate(@RequestParam("id") int id, @RequestParam("name") String name,
 			@RequestParam("price") int price) {
 		Car car = new Car();
 		car.setId(id);
@@ -43,8 +43,8 @@ public class H2Controller {
 		return "success";
 	}
 
-	@RequestMapping("/h2Delete")
-	public String h2Delete(@RequestParam("id") int id) {
+	@RequestMapping("/mysqlDelete")
+	public String mysqlDelete(@RequestParam("id") int id) {
 		Car car = new Car();
 		car.setId(id);
 		carService.deleteCar(car);
@@ -52,8 +52,8 @@ public class H2Controller {
 		return "success";
 	}
 
-	@RequestMapping("/h2InsertMapper")
-	public String h2InsertMapper(@RequestParam("name") String name) {
+	@RequestMapping("/mysqlInsertMapper")
+	public String mysqlInsertMapper(@RequestParam("name") String name) {
 		Car car = new Car();
 		car.setName(name);
 		car.setPrice(50000);
@@ -62,13 +62,13 @@ public class H2Controller {
 		return "success";
 	}
 
-	@RequestMapping("/h2ListMapper")
-	public List<Car> h2ListMapper() {
+	@RequestMapping("/mysqlListMapper")
+	public List<Car> mysqlListMapper() {
 		return carService.selectAllCarsMapper();
 	}
 
-	@RequestMapping("/h2UpdateMapper")
-	public String h2UpdateMapper(@RequestParam("id") int id, @RequestParam("name") String name,
+	@RequestMapping("/mysqlUpdateMapper")
+	public String mysqlUpdateMapper(@RequestParam("id") int id, @RequestParam("name") String name,
 			@RequestParam("price") int price) {
 		Car car = new Car();
 		car.setId(id);
@@ -79,8 +79,8 @@ public class H2Controller {
 		return "success";
 	}
 
-	@RequestMapping("/h2DeleteMapper")
-	public String h2DeleteMapper(@RequestParam("id") int id) {
+	@RequestMapping("/mysqlDeleteMapper")
+	public String mysqlDeleteMapper(@RequestParam("id") int id) {
 		Car car = new Car();
 		car.setId(id);
 		carService.deleteCarMapper(car);
