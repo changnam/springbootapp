@@ -14,6 +14,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -22,10 +23,13 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import com.honsoft.web.entity.Car;
 import com.honsoft.web.mapper.h2.CarMapper;
 import com.honsoft.web.repository.h2.CarRepository;
+import com.honsoft.web.service.StorageProperties;
+import com.honsoft.web.service.StorageService;
 
 @SpringBootApplication(exclude = { DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class,
 		DataSourceTransactionManagerAutoConfiguration.class })
 @EnableTransactionManagement
+@EnableConfigurationProperties(StorageProperties.class)
 //@ImportResource(value="classpath:hsql_cfg.xml")
 public class SpringbootappApplication implements CommandLineRunner {
 
@@ -71,6 +75,14 @@ public class SpringbootappApplication implements CommandLineRunner {
 		return new BCryptPasswordEncoder();
 	}
 
+	@Bean
+	CommandLineRunner init(StorageService storageService) {
+		return (args) -> {
+			storageService.deleteAll();
+			storageService.init();
+		};
+	}
+	
 	@Override
 	public void run(String... args) throws Exception {
 		logger.info("Let's inspect the beans provided by Spring Boot: h2CarRepository");
