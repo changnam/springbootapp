@@ -14,6 +14,7 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.mybatis.spring.boot.autoconfigure.SpringBootVFS;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.ApplicationContext;
@@ -45,11 +46,15 @@ public class DataSourceConfigOracle {
 	@Autowired
 	private Environment env;
 
-	// datasource
+	@Bean
+	@ConfigurationProperties("oracle.datasource.hikari")
+	public DataSourceProperties oracleDataSourceProperties() {
+		return new DataSourceProperties();
+	}
+
 	@Bean(name = "oracleDataSource", destroyMethod = "close")
-	@ConfigurationProperties(prefix = "oracle.datasource.hikari")
 	public DataSource oracleDataSource() {
-		return DataSourceBuilder.create().type(HikariDataSource.class).build();
+		return oracleDataSourceProperties().initializeDataSourceBuilder().type(HikariDataSource.class).build();
 	}
 
 	@Bean

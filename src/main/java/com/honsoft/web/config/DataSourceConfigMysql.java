@@ -14,6 +14,7 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.mybatis.spring.boot.autoconfigure.SpringBootVFS;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.ApplicationContext;
@@ -45,14 +46,18 @@ public class DataSourceConfigMysql {
 	@Autowired
 	private Environment env;
 
-	// --------------------------------------------------------------------------------------------
-	// datasource
-	@Bean(name = "mysqlDataSource", destroyMethod = "close")
-	@ConfigurationProperties(prefix = "mysql.datasource.hikari")
-	public DataSource mysqlDataSource() {
-		return DataSourceBuilder.create().type(HikariDataSource.class).build();
+	@Bean
+	@ConfigurationProperties("mysql.datasource.hikari") //DataSourceProperties 의 각 변수에 값을 셋팅함. url 로 지정한 값은 initializeDataSourceBuilder 에서 hikari에 맞게 jdbc-url로 변경됨
+	public DataSourceProperties mysqlDataSourceProperties() {
+		DataSourceProperties dataSourceProperties = new DataSourceProperties();
+		return dataSourceProperties;
 	}
 
+	@Bean(name = "mysqlDataSource", destroyMethod = "close")
+	public DataSource mysqlDataSource() {
+		return mysqlDataSourceProperties().initializeDataSourceBuilder().type(HikariDataSource.class).build();
+	}
+	
 	@Bean
 	public DataSourceInitializer mysqlDataSourceInitializer(@Qualifier("mysqlDataSource") DataSource datasource) {
 		ResourceDatabasePopulator resourceDatabasePopulator = new ResourceDatabasePopulator();

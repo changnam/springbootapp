@@ -19,6 +19,7 @@ import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.ApplicationContext;
@@ -51,11 +52,15 @@ public class DataSourceConfigHsqldb {
 	@Autowired
 	private Environment env;
 
-	// datasource
+	@Bean
+	@ConfigurationProperties("hsqldb.datasource.hikari")
+	public DataSourceProperties hsqldbDataSourceProperties() {
+		return new DataSourceProperties();
+	}
+
 	@Bean(name = "hsqldbDataSource", destroyMethod = "close")
-	@ConfigurationProperties(prefix = "hsqldb.datasource.hikari")
 	public DataSource hsqldbDataSource() {
-		return DataSourceBuilder.create().type(HikariDataSource.class).build();
+		return hsqldbDataSourceProperties().initializeDataSourceBuilder().type(HikariDataSource.class).build();
 	}
 
 	@Bean

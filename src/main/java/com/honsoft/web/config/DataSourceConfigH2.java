@@ -14,6 +14,7 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.mybatis.spring.boot.autoconfigure.SpringBootVFS;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.ApplicationContext;
@@ -45,14 +46,19 @@ public class DataSourceConfigH2 {
 	@Autowired
 	private Environment env;
 
-	// datasource
-	@Bean(name = "h2DataSource", destroyMethod = "close")
-	@ConfigurationProperties(prefix = "h2.datasource.hikari")
-	@Primary
-	public DataSource h2DataSource() {
-		return DataSourceBuilder.create().type(HikariDataSource.class).build();
+	@Bean
+	@ConfigurationProperties("h2.datasource.hikari") //DataSourceProperties 의 각 변수에 값을 셋팅함. url 로 지정한 값은 initializeDataSourceBuilder 에서 hikari에 맞게 jdbc-url로 변경됨
+	public DataSourceProperties h2DataSourceProperties() {
+		DataSourceProperties dataSourceProperties = new DataSourceProperties();
+		return dataSourceProperties;
 	}
 
+	@Bean(name = "h2DataSource", destroyMethod = "close")
+	@Primary
+	public DataSource h2DataSource() {
+		return h2DataSourceProperties().initializeDataSourceBuilder().type(HikariDataSource.class).build();
+	}
+	
 	@Bean
 	public DataSourceInitializer h2DataSourceInitializer(@Qualifier("h2DataSource") DataSource datasource) {
 		ResourceDatabasePopulator resourceDatabasePopulator = new ResourceDatabasePopulator();
