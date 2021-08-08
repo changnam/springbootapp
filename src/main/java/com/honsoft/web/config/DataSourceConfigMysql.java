@@ -91,6 +91,7 @@ public class DataSourceConfigMysql {
 		Properties jpaProperties = new Properties();
 		jpaProperties.put("hibernate.hbm2ddl.auto", env.getProperty("spring.jpa.hibernate.ddl-auto"));
 		jpaProperties.put("hibernate.show-sql", env.getProperty("spring.jpa.show-sql"));
+		jpaProperties.put("hibernate.dialect", env.getProperty("mysql.datasource.dialect"));
 		factory.setJpaProperties(jpaProperties);
 
 		return factory;
